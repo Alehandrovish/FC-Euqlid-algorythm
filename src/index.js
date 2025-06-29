@@ -11,7 +11,8 @@ function euqlid(a, b) {
   return rest === 0 ? smallest : euqlid(rest, smallest);
 }
 try {
-  console.log(`NOD: ${euqlid(48, 18)}`); //48, 18 = 6; 56, 98 = 14; 105, 252 = 21, -5, 6 = error; 5, -6 = error;
+  const result = euqlid("48", 18); //48, 18 = 6; 56, 98 = 14; 105, 252 = 21, -5, 6 = error; 5, -6 = error;
+  console.log(`NOD: ${result}`);
 } catch (error) {
   console.error("Error:", error.message);
 }
