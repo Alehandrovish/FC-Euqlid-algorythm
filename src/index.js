@@ -1,18 +1,43 @@
 "use strict";
 
 function euqlid(a, b) {
-  if (typeof a !== "number" || typeof b !== "number") {
-    throw new Error("a or b is not a number");
+  if (
+    typeof a !== "number" ||
+    typeof b !== "number" ||
+    !Number.isFinite(a) ||
+    !Number.isFinite(b)
+  ) {
+    throw new Error("a and b must be finite numbers");
   }
-  if (a < 0 || b < 0) throw new Error("a or b below zero");
-  const smallest = a < b ? a : b;
-  const biggest = smallest !== a ? a : b;
-  const rest = biggest % smallest;
-  return rest === 0 ? smallest : euqlid(rest, smallest);
+  if (a <= 0 || b <= 0) throw new Error("a or b below or equal zero");
+  if (a === b) return a; // as NOD
+  let smallest = a < b ? a : b;
+  let biggest = smallest === b ? a : b;
+  let rest;
+  while (smallest !== 0) {
+    rest = biggest % smallest;
+    biggest = smallest;
+    smallest = rest;
+  }
+
+  return biggest;
 }
-try {
-  const result = euqlid("48", 18); //48, 18 = 6; 56, 98 = 14; 105, 252 = 21, -5, 6 = error; 5, -6 = error;
-  console.log(`NOD: ${result}`);
-} catch (error) {
-  console.error("Error:", error.message);
+
+const testCases = [
+  [48, 18],
+  [56, 98],
+  [105, 252],
+  [-5, 6],
+  ["a", 18],
+  [0, 5],
+  [Infinity, 3],
+  [5, NaN],
+];
+
+for (const [a, b] of testCases) {
+  try {
+    console.log(`NOD(${a}, ${b}) = ${euqlid(a, b)}`);
+  } catch (error) {
+    console.error(`Помилка для (${a}, ${b}): ${error.message}`);
+  }
 }
